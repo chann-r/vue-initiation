@@ -2,16 +2,21 @@
 <title>はじめてのVue.js</title>
 <script src="https://unpkg.com/vue@2.5.17"></script>
 
+<!-- マウントされている範囲内ではVueの記法が使える -->
 <div id="app">
   <p>{{message}}</p>
 </div>
 
 <script>
   console.assert(typeof Vue !== 'undefined');
-  new Vue({
+
+ //コンストラクタを使う際は new 演算子を使う
+ //Vueインスタンスを変数に代入するのは複数のVueインスタンスがコミュニケーションするときのため
+  var vm = new Vue({
+    // マウント
     el: '#app',
     data: {
       message: 'こんにちは！'
     }
-  });
+  })
 </script>
