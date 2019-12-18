@@ -19,8 +19,7 @@ var items = [
 
 var vm = new Vue({
   el: '#app',
-  data: {
-    // 可読性の向上のために変数itemを介して渡している
+  data: { // 可読性の向上のために変数itemsを介して渡している
     item: items,
     message: 'a'
   }
