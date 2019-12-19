@@ -1,0 +1,35 @@
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="app">
+  <p>{{ item[0].name}}：{{ item[0].price }} × {{ item[0].quantity }}</p>
+</div>
+
+
+<script>
+var items  = [
+  {
+    name: 'apple',
+    price: 100,
+    quantity: 2
+  },
+  {
+    name: 'orange',
+    price: 200,
+    quantity: 3
+  },
+  {
+    name: 'pineapple',
+    price: 400,
+    quantity: 1
+  }
+]
+
+var vm = new Vue({
+  el: '#app',
+  data: {
+    item: items
+  }
+
+})
+
+</script>

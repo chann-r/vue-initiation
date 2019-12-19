@@ -40,12 +40,15 @@
             computed: {
                 totalPrice: function () {
                   // thisによる参照（this が指すのはVueインスタンス自身）
+                  // reduceメソッドは、隣り合う2つの配列要素に対して左から右へ同時に関数を適用し、単一の値にする
+                  // 配列.reduce(配列内の各値に対して実行される関数, 最初の実引数として渡される値)
                     return this.items.reduce(function (sum, item) {
                         return sum + (item.price * item.quantity)
                     }, 0)
                 },
                 totalPriceWithTax: function () {
                     // 算出プロパティに依存した算出プロパティも定義できる
+                    // Math.floor() メソッドは、引数として与えた数以下の最大の整数を返
                     return Math.floor(this.totalPrice * 1.08)
                 }
             }

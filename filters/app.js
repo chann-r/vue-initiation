@@ -29,6 +29,8 @@ var vm = new Vue({
       if (!value) {
         return '0'
       }
+      // 任意の文字列を置換するreplaceメソッド
+      // .replace(対象の文字, 置換する文字)
       return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$l,')
     }
   }
