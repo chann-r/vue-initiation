@@ -13,5 +13,11 @@ var items = [
     name: '消しゴム',
     price: 100,
     quantity: 1
-  }
 ]
+
+var vm = new Vue({
+  el: '#app',
+  datta: {
+    item: items
+  }
+})
