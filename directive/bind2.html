@@ -59,6 +59,8 @@
       // 1000より小さいとき以下のようなスタイルを返す
       errorMessageStyle: function() {
         return {
+          // スタイルのバインディング v-bind:style="{border: '1px solid red'}"
+          // 式と組み合わせてスタイルのバインディング
           // border: (this.canBuy ? '' : '1px solid red'),
           border: this.canBuy ? '' : '1px solid red',
           color: this.canBuy ? '' : 'red'
