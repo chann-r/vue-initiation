@@ -1,0 +1,73 @@
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="app">
+  <div v-bind:style="errorMessageStyle">
+    <ul>
+      <!-- 繰り返しレンダリングする v-for ディレクティブ -->
+      <!-- 繰り返しレンダリングする際は、v-bind:key="~~~" で一意なキーを各要素に与える -->
+      <!-- v-for="要素 in 配列" v-bind:key="~~~" -->
+      <li v-for="thing in item" v-bind:key="thing.name">
+        {{ thing.name }}：{{ thing.price }} × {{ thing.quantity }} = {{ thing.price * thing.quantity | numberWithDelimiter }}
+      </li>
+    </ul>
+    <p>{{ item[0].name }}：{{ item[0].price }} × {{ item[0].quantity }}</p>
+    <p>小計：{{ totalPrice | numberWithDelimiter }}円</p>
+    <p>合計：{{ totalPriceWithTax | numberWithDelimiter}}円 </p>
+  </div>
+
+</div>
+
+<script>
+  var items = [
+  {
+    name: 'apple',
+    price: 200,
+    quantity: 1
+  },
+  {
+    name: 'orange',
+    price: 100,
+    quantity: 5
+  },
+  {
+    name: 'pineapple',
+    price: 400,
+    quantity: 1
+  }
+  ]
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      item: items
+    },
+    filters: {
+      numberWithDelimiter: function (value) {
+        if (!value) {
+          return '0'
+        }
+        return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+      }
+    },
+    computed: {
+      totalPrice: function () {
+        return this.item.reduce(function(sum, itemitem) {
+          return sum + (itemitem.price * itemitem.quantity)
+        }, 0)
+      },
+      totalPriceWithTax: function () {
+        return Math.floor(this.totalPrice * 1.08)
+      },
+      canBuy: function () {
+        return this.totalPrice >= 1000
+      },
+      errorMessageStyle: function () {
+        return {
+          border: this.canBuy ? '' : '1px solid red',
+          color: this.canBuy ? '' : 'red'
+        }
+      }
+    }
+  })
+
+</script>
