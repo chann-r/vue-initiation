@@ -1,0 +1,69 @@
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="app">
+  <!-- 属性値（クラスとスタイル）のバインディングのためのv-bindディレクティブ -->
+  <!-- 特定の条件でUIの見た目を変えたいときに使う -->
+  <div :style="errorMessageStyle">
+    <p>{{ item[0].name}}：{{ item[0].price}} × {{ item[0].quantity }}</p>
+    <p>小計：{{ totalPrice | numberWithDelimiter }}</p>
+    <p>合計：{{ totalPriceWithTax | numberWithDelimiter }}</p>
+    <p v-if="!canBuy">
+      {{ 1000 | numberWithDelimiter }}円以上からご購入いただけます
+    </p>
+  </div>
+</div>
+
+<script>
+  var items = [{
+      name: 'apple',
+      price: 200,
+      quantity: 1
+    },
+    {
+      name: 'orange',
+      price: 100,
+      quantity: 5
+    },
+    {
+      name: 'pineapple',
+      price: 400,
+      quantity: 1
+    }
+  ]
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      item: items
+    },
+    filters: {
+      numberWithDelimiter: function(value) {
+        if (!value) {
+          return '0'
+        }
+        return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+      }
+    },
+    computed: {
+      totalPrice: function() {
+        return this.item.reduce(function(sum, itemitem) {
+          return sum + (itemitem.price * itemitem.quantity)
+        }, 0)
+      },
+      totalPriceWithTax: function() {
+        return Math.floor(this.totalPrice * 1.08)
+      },
+      canBuy: function() {
+        return this.totalPrice >= 1000
+      },
+      // 1000より小さいとき以下のようなスタイルを返す
+      errorMessageStyle: function() {
+        return {
+          // border: (this.canBuy ? '' : '1px solid red'),
+          border: this.canBuy ? '' : '1px solid red',
+          color: this.canBuy ? '' : 'red'
+        }
+      }
+    }
+  })
+</script>
