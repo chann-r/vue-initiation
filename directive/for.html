@@ -13,6 +13,7 @@
     <p>{{ item[0].name }}：{{ item[0].price }} × {{ item[0].quantity }}</p>
     <p>小計：{{ totalPrice | numberWithDelimiter }}円</p>
     <p>合計：{{ totalPriceWithTax | numberWithDelimiter}}円 </p>
+    <p v-show="!canBuy">1000円以上でお願いします</p>
   </div>
 
 </div>
