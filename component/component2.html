@@ -1,0 +1,46 @@
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="fruits-list">
+  <!-- 登録したコンポーネントを使用 -->
+  <fruits-list-title></fruits-list-title>
+  <fruits-list-description></fruits-list-description>
+  <fruits-list-title></fruits-list-title>
+</div>
+
+<script>
+  //コンポーネントの定義はマウント前に定義
+  Vue.component('fruits-list-title', {
+    template: '<h1>フルーツ一覧</h1>'
+  })
+
+  Vue.component('fruits-list-description', {
+    template: '<div>季節の代表的なフルーツの一覧</div>'
+  })
+
+  Vue.conponent('fruits-list-table', {
+    template: '
+    <table>
+      <tr>
+        <th>季節</th>
+        <th>フルーツ</th>
+      </tr>
+      <tr>
+        <th>春</th>
+        <th>いちご</th>
+      </tr>
+      <tr>
+        <th>秋</th>
+        <th>ぶどう</th>
+      </tr>
+      <tr>
+        <th>冬</th>
+        <th>みかん</th>
+      </tr>
+    </table>
+    '
+  })
+
+  new Vue({
+    el: '#fruits-list'
+  })
+</script>
