@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vue.js SPAのサンプルアプリケーション</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- リンクを定義するrouter-linkタグ -->
+      <router-link to="/top">トップページ</router-link>
+      <router-link to="/users">ユーザー一覧ページ</router-link>
+      <!-- ルート定義でマッピングしたコンポーネントを反映するrouter-viewタグ -->
+      <router-view></router-view>
+    </div>
+    <div>
+      <!-- Vue.js本体と Vue Routerの読み込み -->
+      <script src="https://unpkg.com/vue@2.5.17"></script>
+      <script src="https://unpkg.com/vue-router@2.7.0/dist/vue-router.min.js"></script>
+    </div>
+
+    <script>
+      // ルーターインスタンスを生成
+      var router = new VueRouter({
+        // ルートオプション（ルート定義は配列で渡す）
+        routes: [
+          {
+            // URLを指定（ファイル名#/URL でアクセスできる）
+            path: '/top',
+            // 各ルートにコンポーネントをマッピング
+            component: {
+              template: '<div>トップページです。</div>'
+            }
+          },
+          {
+            path: '/users',
+            component: {
+              template: '<div>ユーザー一覧ページです。</div>'
+            }
+          }
+        ]
+      })
+
+      // ルーターのインスタンスをrootとなるVueインスタンスに渡す
+      var app = new Vue({
+        router: router
+      }).$mount('#app')
+    </script>
+  </body>
+</html>
