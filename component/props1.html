@@ -1,0 +1,30 @@
+<!-- 親コンポーネントから子コンポーネントへデータを渡すためのpropsオプション -->
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="app">
+  <!-- 親からテンプレートの属性(v-bind)経由で渡す -->
+  <!-- テンプレート側の属性名にはケバブケース -->
+  <item-desc v-bind:item-name="myItem"></item-desc>
+</div>
+
+<script>
+  //子コンポーネント
+  Vue.component('item-desc', {
+    // 子コンポーネントでpropsを指定
+    props: {
+      // propsでキャメルケース
+      itemName: {
+        type: String
+      }
+    },
+    template: '<p>{{ itemName }}は便利です</p>'
+  })
+
+  //親コンポーネント
+  new Vue({
+    el: '#app',
+    data: {
+      myItem: 'pen'
+    }
+  })
+</script>

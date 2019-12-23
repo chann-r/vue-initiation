@@ -5,6 +5,7 @@
     <ul>
       <li v-for="thing in item" v-bind:key="thing.name">
         <!-- v-on:input="thing.quantity = $event.target.valut" v-bind:value="thing.quantity" と同様のことを簡潔に記述できるv-modelディレクティブ -->
+        <!-- v-modelディレクティブで結び付ける値を指定する -->
         {{ thing.name }}の個数：<input type="number" v-model="thing.quantity" min=0>
       </li>
     </ul>
