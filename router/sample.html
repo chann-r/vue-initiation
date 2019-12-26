@@ -26,6 +26,17 @@
   </div>
 </script>
 
+<script type="text/x-template" id="user-detail">
+  <div>
+    <div class="loading" v-if="loading">読み込み中...</div>
+    <div class="error" v-if="error">{{ error }}</div>
+    <div v-if="user">
+      <h2>{{ user.name }}</h2>
+      <h2>{{ user.description }}</h2>
+    </div>
+  </div>
+</script>
+
 <script>
   // コールバック関数を引数に渡し、
   var getUsers = function (callback) {
@@ -87,6 +98,62 @@
     }
   }
 
+  var UserData = [
+    {
+      id: 1,
+      name: 'Ryotaro Hayashi',
+      description: '公立はこだて未来大学3年'
+    },
+    {
+      id: 2,
+      name: 'Masuda Yuzuka',
+      description: '北海道教育大学函館校3年'
+    }
+  ]
+
+  var getUser = function (userId, callback) {
+    setTimeout (function () {
+      // filterメソッドは、配列のデータを抽出するためのメソッド
+      // idが一致するユーザーを抽出
+      var filteredUsers = userData.filter(function (user) {
+        // parseIntは、引数の文字列を数値に変換する（第2引数は基数）
+        return user.id == parseInt(userId, 10)
+      })
+      callback(null, filteredUsers && filteredUsers[0])
+    }, 1000)
+  }
+
+  var UserDetail = {
+    template: '#user-detail',
+    data: function () {
+      return {
+        loading: false,
+        user: null,
+        error: null
+      }
+    },
+    created: function () {
+      this.fetchData()
+    },
+    watch: {
+      '$route': 'fetchData'
+    },
+    method: {
+      fetchData: function () {
+        this.loading = true
+        getUser(this.$route.params.userId, (function (err, user) {
+          this.loading = false
+          if (err) {
+            this.error = err.toStrig()
+          } else {
+            this.user = user
+          }
+        }).bind(this))
+      }
+    }
+
+  }
+
   var router = new VueRouter({
     routes: [
       {
@@ -99,6 +166,10 @@
         path: '/users',
         // コンポーネントにユーザー一覧ページのテンプレートを変数に格納したものを渡す
         component: UserList
+      },
+      {
+        path: 'users/:userId',
+        component: UserDetail
       }
     ]
   })
