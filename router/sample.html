@@ -15,13 +15,76 @@
 <script src="https://unpkg.com/vue@2.5.17"></script>
 <script src="https://unpkg.com/vue-router@2.7.0/dist/vue-router.min.js"></script>
 
+<!-- ユーザー一覧ページのテンプレートをx-templateに切り出す -->
 <script type="text/x-template" id="user-list">
-  <div>ユーザー一覧ページです。</div>
+  <div>
+    <div class="loading" v-if="loading">読み込み中...</div>
+    <div class="error" v-if="error">{{ error }}</div>
+    <div v-for="user in users" :key="user.id">
+      <h2>{{ user.name }}</h2>
+    </div>
+  </div>
 </script>
 
 <script>
+  // コールバック関数を引数に渡し、
+  var getUsers = function (callback) {
+    setTimeout (function () {
+      // コールバック関数
+      // errorがnullで、usersを配列で渡す
+      callback(null, [
+        {
+          id: 1,
+          name: 'Ryotaro Hayashi'
+        },
+        {
+          id: 2,
+          name: 'Yuzu Masuda'
+        }
+      ])
+    }, 1000)
+  }
+
+  // ユーザー一覧ページのテンプレートを変数に格納
   var UserList = {
-    template: '#user-list'
+    // x-templateに切り出したものをテンプレートへ
+    template: '#user-list',
+    data: function () {
+      // データの初期値は、ロードがされておらず、ユーザー情報も空で、エラーもない
+      return {
+        loading: false,
+        users: function (){
+          return []
+        },
+        error: null
+      }
+    },
+    // ライフサイクルフックのcreatedで、データの値を変更
+    created: function () {
+      this.fetchData()
+    },
+    // watchによって$routeを検出（監視）して、ルートに変更があるたびに処理を呼び出す
+    watch: {
+      '$route': 'fetchData'
+    },
+    methods: {
+      // データを更新するための関数
+      fetchData: function () {
+        // 読み込み中...を表示させる
+        this.loading = true
+        // コールバック関数で定義したデータにerrとusersという名前を付ける
+        getUsers((function (err, users) {
+          // 読み込み中...を非表示にする
+          this.loading = false
+          if (err) {
+            this.error = err.toString()
+          } else {
+            // エラーがなければ、
+            this.users = users
+          }
+        }).bind(this))
+      }
+    }
   }
 
   var router = new VueRouter({
@@ -34,6 +97,7 @@
       },
       {
         path: '/users',
+        // コンポーネントにユーザー一覧ページのテンプレートを変数に格納したものを渡す
         component: UserList
       }
     ]
