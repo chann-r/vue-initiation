@@ -1,8 +1,15 @@
+<!-- 単一ファイルコンポーネント（1つのファイルに1つのコンポーネント） -->
+
+<!-- テンプレートを書き込むブロック -->
 <template>
   <p class="message">メッセージ：{{ msg }}</p>
 </template>
 
+<!-- 動的なUIを実装するためのブロック -->
 <script>
+// ライブラリや他のコンポーネントのインポートは import A from B
+
+// 他のファイルでインポートできるようにするためにエクスポート
 export default {
   data () {
     return { msg: 'こんにちは！' }
@@ -10,6 +17,7 @@ export default {
 }
 </script>
 
+<!-- スタイルを書くためのブロック -->
 <style>
 .message {
   color: #42b983;
