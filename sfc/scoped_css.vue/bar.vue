@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .bar {
   border: 1px solid red;
   margin: 4px;
