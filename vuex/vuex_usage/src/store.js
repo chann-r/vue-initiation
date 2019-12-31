@@ -7,7 +7,7 @@ const store = new Vuex.Store({
   // アプリケーション全体で使用されるデータの状態を管理するためのステート
   state: {
     // タスクの初期ステート
-    tasks: {
+    tasks: [
       {
         id: 1,
         name: '牛乳を買う',
@@ -18,8 +18,8 @@ const store = new Vuex.Store({
         name: 'Vue.jsの本を買う',
         done: true
       }
-    },
-  },
+    ]
+  }
 })
 
 // ストアをエクスポート
