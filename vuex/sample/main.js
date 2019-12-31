@@ -8,5 +8,6 @@ new Vue({
   el: '#app',
   // コンポーネントからストアを利用できるようにする
   store,
+  // 描画関数
   render: h => h(App)
 })
