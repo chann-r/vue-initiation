@@ -9,7 +9,6 @@
 <script>
 // ライブラリや他のコンポーネントのインポートは import A from B
 
-// 他のファイルでインポートできるようにするためにエクスポート
 export default {
   data () {
     return { msg: 'こんにちは！' }
