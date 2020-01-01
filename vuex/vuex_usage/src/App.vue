@@ -7,22 +7,36 @@
       <li v-for="task in tasks" v-bind:key="task.id">
         <!-- changeイベントによってtoggleTaskStatusメソッドを呼び出す -->
         <input type="checkbox" v-bind:checked="task.done" v-on:change="toggleTaskStatus(task)">
-        {{ task.name }}
+        {{ task.name }}：
+        <span v-for="id in task.labelIds" v-bind:key="id">
+          {{ getLabelText(id) }}
+        </span>
       </li>
     </ul>
     <!-- .preventでフォーム送信後の画面更新を避ける -->
     <form v-on:submit.prevent="addTask">
       <input type="text" v-model="newTaskName" placeholder="新しいタスク">
     </form>
+
+    <h2>ラベル一覧</h2>
+     <ul>
+      <li v-for="label in labels" v-bind:key="label.id">
+        <input type="checkbox">
+        {{ label.text }}
+      </li>
+    </ul>
+    <form v-on:submit.prevent="addLabel">
+      <input type="text" v-model="newLabelName" placeholder="新しいラベル">
+    </form>
   </div>
 </template>
-
 
 <script>
 export default {
   data () {
     return {
-      newTaskName: ''
+      newTaskName: '',
+      newLabelName: ''
     }
   },
   // テンプレート内でストアで定義したステートを利用できるように
@@ -30,6 +44,9 @@ export default {
   computed: {
     tasks () {
       return this.$store.state.tasks // ストアを読む
+    },
+    labels () {
+      return this.$store.state.labels
     }
   },
   methods: {
@@ -40,12 +57,24 @@ export default {
       this.$store.commit('addTask', {
         name: this.newTaskName
       })
+      // 送信後のフォームを空にする
       this.newTaskName = ''
     },
     toggleTaskStatus (task) {
       this.$store.commit('toggleTaskStatus', {
         id: task.id
       })
+    },
+    addLabel () {
+      this.$store.commit('addLabel', {
+        text: this.newLabelName
+      })
+      this.newLabelName = ''
+    },
+    // ラベルのIDからそのラベルのテキストを返すメソッド
+    getLabelText (id) {
+      const label = this.labels.filter(label => label.id === id)[0]
+      return label ? label.text : ''
     }
   }
 }

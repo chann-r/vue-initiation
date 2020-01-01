@@ -7,20 +7,40 @@ const store = new Vuex.Store({
   // アプリケーション全体で使用されるデータの状態を管理するためのステート
   state: {
     // タスクの初期ステート
-    // {} ではなく、[]
+    // {}はオブジェクトの生成、[]は配列の生成
     tasks: [
       {
         id: 1,
         name: '牛乳を買う',
+        labelIds: [1, 2],
         done: false
       },
       {
         id: 2,
         name: 'Vue.jsの本を買う',
+        labelIds: [1, 3],
         done: true
       }
     ],
-    nextTaskId: 3
+    nextTaskId: 3,
+    labels: [
+      {
+        id: 1,
+        text: '買い物',
+        done: false
+      },
+      {
+        id: 2,
+        text: '食料',
+        done: false
+      },
+      {
+        id: 3,
+        text: '本',
+        done: false
+      }
+    ],
+    nextLabelId: 4
   },
   // mutationsは、ステートを更新するためのもの
   mutations: {
@@ -45,6 +65,14 @@ const store = new Vuex.Store({
       filtered.forEach(task => {
         task.done = !task.done
       })
+    },
+    addLabel (state, { text }) {
+      state.labels.push({
+        id: state.nextLabelId,
+        text,
+        done: false
+      })
+      state.nextLabelId++
     }
   }
 })
