@@ -5,14 +5,14 @@
     <h2>タスク一覧</h2>
     <ul>
       <li v-for="task in tasks" v-bind:key="task.id">
-        <!-- changeイベントによってtoggleTaskStatusミューテーションを呼び出す -->
+        <!-- changeイベントによってtoggleTaskStatusメソッドを呼び出す -->
         <input type="checkbox" v-bind:checked="task.done" v-on:change="toggleTaskStatus(task)">
         {{ task.name }}
       </li>
     </ul>
+    <!-- .preventでフォーム送信後の画面更新を避ける -->
     <form v-on:submit.prevent="addTask">
       <input type="text" v-model="newTaskName" placeholder="新しいタスク">
-
     </form>
   </div>
 </template>
@@ -33,7 +33,10 @@ export default {
     }
   },
   methods: {
+    // ミューテーションを呼び出すメソッド
     addTask () {
+      // ミューテーションは直接は呼び出せず、
+      // store.commitにミューテーション名を与えて呼ぶ出す
       this.$store.commit('addTask', {
         name: this.newTaskName
       })

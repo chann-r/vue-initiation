@@ -24,10 +24,10 @@ const store = new Vuex.Store({
   },
   // mutationsは、ステートを更新するためのもの
   mutations: {
-    // addTaskミューテーションを定義
     // 第一引数に渡されたステートを更新する
-    // 第二引数に
-    // ミューテーションは直接は呼び出せず、store.commitにミューテーション名を与えて呼ぶ出す
+    // 第二引数には中身に渡すものを入れる
+    // 第二引数にnameオブジェクトを渡す（{}は、オブジェクトの作成）
+    // タスクを追加するミューテーション
     addTask (state, { name }) {
       state.tasks.push({
         id: state.nextTaskId,
@@ -36,11 +36,13 @@ const store = new Vuex.Store({
       })
       state.nextTaskId++
     },
+    // タスクの完了状態を更新するミューテーション
     toggleTaskStatus (state, { id }) {
+      // filterメソッドにアロー関数を渡す
       const filtered = state.tasks.filter(task => {
         return task.id === id
       })
-      filterd.forEach(task => {
+      filtered.forEach(task => {
         task.done = !task.done
       })
     }
