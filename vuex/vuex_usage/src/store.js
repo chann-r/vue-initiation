@@ -40,7 +40,21 @@ const store = new Vuex.Store({
         done: false
       }
     ],
-    nextLabelId: 4
+    nextLabelId: 4,
+    // フィルタするラベルのID
+    filter: null
+  },
+  // gettersは、ステートから別の値を算出するためのもの
+  getters: {
+    filteredTasks (state) {
+      if (!state.filter) {
+        return state.tasks
+      }
+
+      return state.tasks.filter(task => {
+        return task.labelIds.indexOf(state.filter) >= 0
+      })
+    }
   },
   // mutationsは、ステートを更新するためのもの
   mutations: {
@@ -73,6 +87,10 @@ const store = new Vuex.Store({
         text
       })
       state.nextLabelId++
+    },
+    // フィルタリング対象のラベルを変更する
+    changeFilter (state, { filter }) {
+      state.filter = filter
     }
   }
 })
