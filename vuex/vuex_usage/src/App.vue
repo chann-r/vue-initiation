@@ -21,12 +21,12 @@
     <h2>ラベル一覧</h2>
      <ul>
       <li v-for="label in labels" v-bind:key="label.id">
-        <input type="checkbox">
+        <input type="checkbox" v-bind:value="label.id" v-model="newTasklabelIds">
         {{ label.text }}
       </li>
     </ul>
     <form v-on:submit.prevent="addLabel">
-      <input type="text" v-model="newLabelName" placeholder="新しいラベル">
+      <input type="text" v-model="newLabelText" placeholder="新しいラベル">
     </form>
   </div>
 </template>
@@ -36,7 +36,8 @@ export default {
   data () {
     return {
       newTaskName: '',
-      newLabelName: ''
+      newTasklabelIds: [],
+      newLabelText: ''
     }
   },
   // テンプレート内でストアで定義したステートを利用できるように
@@ -55,10 +56,12 @@ export default {
       // ミューテーションは直接は呼び出せず、
       // store.commitにミューテーション名を与えて呼ぶ出す
       this.$store.commit('addTask', {
-        name: this.newTaskName
+        name: this.newTaskName,
+        labelIds: this.newTasklabelIds
       })
       // 送信後のフォームを空にする
       this.newTaskName = ''
+      this.newTasklabelIds = []
     },
     toggleTaskStatus (task) {
       this.$store.commit('toggleTaskStatus', {
@@ -67,9 +70,9 @@ export default {
     },
     addLabel () {
       this.$store.commit('addLabel', {
-        text: this.newLabelName
+        text: this.newLabelText
       })
-      this.newLabelName = ''
+      this.newLabelText = ''
     },
     // ラベルのIDからそのラベルのテキストを返すメソッド
     getLabelText (id) {

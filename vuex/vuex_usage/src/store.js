@@ -48,10 +48,11 @@ const store = new Vuex.Store({
     // 第二引数には中身に渡すものを入れる
     // 第二引数にnameオブジェクトを渡す（{}は、オブジェクトの作成）
     // タスクを追加するミューテーション
-    addTask (state, { name }) {
+    addTask (state, { name, labelIds }) {
       state.tasks.push({
         id: state.nextTaskId,
         name,
+        labelIds,
         done: false
       })
       state.nextTaskId++
@@ -69,8 +70,7 @@ const store = new Vuex.Store({
     addLabel (state, { text }) {
       state.labels.push({
         id: state.nextLabelId,
-        text,
-        done: false
+        text
       })
       state.nextLabelId++
     }
