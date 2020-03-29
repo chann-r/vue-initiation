@@ -1,0 +1,77 @@
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="app">
+  <ul>
+    <li v-for="thing in item" v-bind:key="thing.name">
+      <!-- イベントハンドリングのv-onディレクティブ　v-on:イベント名="式として実行したい属性値" -->
+      <!-- inputイベントをハンドリングして、入力のたびに入力された値でquantityプロパティを更新している -->
+      <!-- $eventはDOMオブジェクトの参照 -->
+      {{ item.name }}の個数：<input type="number" v-on:input="thing.quantity = $event.target.value" v-bind:value="thing.quantity" min="0">
+    </li>
+  </ul>
+  <div v-bind:style="errorMessageStyle">
+    <ul>
+      <li v-for="thing in item" v-bind:key="thing.name">
+        {{ thing.name }}：{{ thing.price }} × {{ thing.quantity }} = {{ thing.price * thing.quantity | numberWithDelimiter }}
+      </li>
+    </ul>
+    <p>小計{{ totalPrice | numberWithDelimiter }}</p>
+    <p>合計{{ totalPriceWithTax | numberWithDelimiter }}</p>
+    <p v-show="!canBuy">
+      {{ 1000 | numberWithDelimiter }}円以上でお願いします
+    </p>
+  </div>
+</div>
+
+<script>
+  var items = [{
+      name: 'apple',
+      price: 200,
+      quantity: 1
+    },
+    {
+      name: 'orange',
+      price: 100,
+      quantity: 5
+    },
+    {
+      name: 'pineapple',
+      price: 400,
+      quantity: 1
+    }
+  ]
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      item: items
+    },
+    filters: {
+      numberWithDelimiter: function(value) {
+        if (!value) {
+          return '0'
+        }
+        return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+      }
+    },
+    computed: {
+      totalPrice: function() {
+        return this.item.reduce(function(sum, itemitem) {
+          return sum + (itemitem.price * itemitem.quantity)
+        }, 0)
+      },
+      totalPriceWithTax: function() {
+        return Math.floor(this.totalPrice * 1.08)
+      },
+      canBuy: function() {
+        return this.totalPrice >= 1000
+      },
+      errorMessageStyle: function() {
+        return {
+          border: this.canBuy ? '' : '1px solid red',
+          color: this.canBuy ? '' : 'red'
+        }
+      }
+    }
+  })
+</script>

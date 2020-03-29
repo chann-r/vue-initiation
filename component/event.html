@@ -1,0 +1,56 @@
+<!-- 子コンポーネントから親コンポーネントへ通信するためのカスタムイベント -->
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="fruits-counter">
+  <div v-for="fruit in fruits" v-bind:key="fruit.name">
+    <!-- incremntカスタムイベントを検知できるようにv-onディレクティブを設定 -->
+    <!-- incremntカスタムイベントによってincrementCartStatusメソッドが呼び出される -->
+    {{ fruit.name }}：<counter-button v-on:increment="incrementCartStatus"></counter-button>
+  </div>
+  <p>合計：{{ total }}</p>
+</div>
+
+<script>
+  //サブコンストラクタ方式でコンポーネントを定義
+  var counterButton = Vue.extend({
+    // ボタンのクリックイベントによってaddToCartメソッドが呼ばれる
+    template: '<span>{{ counter }}個<button v-on:click="addToCart">追加</button></span>',
+    data: function () {
+      return {
+        counter: 0
+      }
+    },
+    methods: {
+      addToCart: function () {
+        this.counter += 1
+        // incrementカスタムイベントの発火
+        this.$emit('increment')
+      }
+    }
+  })
+</script>
+
+<script>
+
+  new Vue({
+    el: '#fruits-counter',
+    // ローカルコンポーネントの定義
+    // カスタムタグが使用できるように設定
+    components: {
+      'counter-button': counterButton
+    },
+    data: {
+      total: 0,
+      fruits: [
+        {name: '梨'},
+        {name: 'イチゴ'}
+      ]
+    },
+    methods: {
+      incrementCartStatus: function () {
+        this.total += 1
+      }
+    }
+  })
+
+</script>

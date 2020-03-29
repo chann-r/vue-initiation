@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<title>Vue.Stationery store</title>
+<script src="https://unpkg.com/vue@2.5.17"></script>
+<div id='app'>
+  <ul>
+    <li v-for="thing in item" v-bind:key="thing.name">
+      {{ thing.name }}の個数：<input type="number" v-model="thing.quantity" min=0>
+    </li>
+  </ul>
+  <div v-bind:style="errorMessageStyle">
+    <ul>
+      <li v-for="thing in item" v-bind:key="thing.name">
+        {{ thing.name }}：{{ thing.price }} × {{ thing.quantity }} = {{ thing.price * thing.quantity | numberWithDelimiter }}
+      </li>
+    </ul>
+    <p>小計：{{ totalPrice | numberWithDelimiter }}</p>
+    <p>合計：{{ totalPriceWithTax | numberWithDelimiter }}</p>
+    <p v-show="!canBuy">
+      {{ 1000 | numberWithDelimiter }}以上からご購入いただけます
+    </p>
+  </div>
+  <!-- クリックイベントでdoBuyメソッドを呼び出す -->
+  <button v-bind:disabled="!canBuy" v-on:click="doBuy">購入</button>
+</div>
+
+<script>
+  var items = [
+  {
+    name: 'apple',
+    price: 200,
+    quantity: 1
+  },
+  {
+    name: 'orange',
+    price: 100,
+    quantity: 5
+  },
+  {
+    name: 'pineapple',
+    price: 400,
+    quantity: 1
+  }
+  ]
+
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      item: items
+    },
+    filters: {
+      numberWithDelimiter: function (value) {
+        if (!value) {
+          return '0'
+        }
+        return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+      }
+    },
+    methods: {
+      doBuy: function () {
+        alert(this.totalPriceWithTax + '円のお買い上げ！')
+        // 配列のそれぞれのquantityを0にする
+        this.item.forEach(function (item) {
+          item.quantity = 0
+        })
+      }
+    },
+    computed: {
+      totalPrice: function () {
+        return this.item.reduce(function(sum, itemitem) {
+          return sum + (itemitem.price * itemitem.quantity)
+        }, 0)
+      },
+      totalPriceWithTax: function () {
+        return Math.floor(this.totalPrice * 1.08)
+      },
+      canBuy: function () {
+        return this.totalPrice >= 1000
+      },
+      errorMessageStyle: function () {
+        return {
+          border: this.canBuy ? '' : '1px solid red',
+          color: this.canBuy ? '' : 'red'
+        }
+      }
+    }
+  })
+</script>

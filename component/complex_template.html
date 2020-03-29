@@ -1,0 +1,22 @@
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="fruits-list">
+  <!-- 登録したコンポーネントを使用 -->
+  <fruits-list-title></fruits-list-title>
+  <fruits-list-description></fruits-list-description>
+</div>
+
+<script>
+  //コンポーネントの定義はマウント前に定義
+  Vue.component('fruits-list-title', {
+    template: '<h1>フルーツ一覧</h1>'
+  })
+
+  Vue.component('fruits-list-description', {
+    template: '<div>季節の代表的なフルーツの一覧</div>'
+  })
+
+  new Vue({
+    el: '#fruits-list'
+  })
+</script>
